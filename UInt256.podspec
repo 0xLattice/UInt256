@@ -3,10 +3,10 @@ Pod::Spec.new do |s|
   s.version = '0.2.2'
   s.license = 'MIT'
   s.summary = 'UInt256 library written in Swift 4'
-  s.homepage = 'https://github.com/adalinxx/UInt256'
+  s.homepage = 'https://github.com/0xLattice/UInt256'
   s.license = { :type => 'MIT' }
   s.authors = { 'hyugit' => '13056774+hyugit@users.noreply.github.com' }
-  s.source = { :git => 'https://github.com/adalinxx/UInt256.git', :tag => s.version }
+  s.source = { :git => 'https://github.com/0xLattice/UInt256.git', :tag => s.version }
   s.frameworks = 'Foundation'
   s.swift_versions = '5.0.1'
 
