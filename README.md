@@ -1,7 +1,7 @@
 # UInt256
 
 [![Language](https://img.shields.io/badge/swift-4-orange.svg)](https://swift.org)
-[![Platform](https://img.shields.io/badge/platform-ios%20|%20macos-lightgrey.svg)](https://github.com/adalinxx/UInt256)
+[![Platform](https://img.shields.io/badge/platform-ios%20|%20macos-lightgrey.svg)](https://github.com/0xLattice/UInt256)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-green.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![CocoaPods Compatible](https://img.shields.io/badge/CocoaPods-compatible-green.svg?style=flat)](https://cocoapods.org/)
 
@@ -59,7 +59,7 @@ To integrate this library into your Xcode project, simply put the following line
 your `carfile`:
 
 ```
-github "adalinxx/UInt256"
+github "0xLattice/UInt256"
 ```
 
 Finally, run `carthage update` to build the framework, and drag the built framework
@@ -72,7 +72,7 @@ config set up already, please add the following line to your **Package.swift**:
 
 ```
 dependencies: [
-    .package(url: "https://github.com/adalinxx/UInt256.git", from: "4.0.0")
+    .package(url: "https://github.com/0xLattice/UInt256.git", from: "4.0.0")
 ]
 ```
 
@@ -88,7 +88,7 @@ platform :ios, '10.0'
 use_frameworks!
 
 target '<Your Target Name>' do
-    pod 'UInt256', :git => 'https://github.com/adalinxx/UInt256.git'
+    pod 'UInt256', :git => 'https://github.com/0xLattice/UInt256.git'
 end
 ```
 
@@ -102,7 +102,7 @@ In the terminal, under your top level project directory, add this library as a
 `git submodule` by running the following command:
 
 ```
-git submodule add https://github.com/adalinxx/UInt256.git
+git submodule add https://github.com/0xLattice/UInt256.git
 ```
 
 Have Xcode open, go to your new `UInt256` subdirectory in Finder, drag
@@ -124,4 +124,4 @@ the framework to your build target._
 
 ## License
 
-This library is released under the MIT license. Please see [LICENSE](https://github.com/adalinxx/UInt256/blob/master/LICENSE)
+This library is released under the MIT license. Please see [LICENSE](https://github.com/0xLattice/UInt256/blob/master/LICENSE)
