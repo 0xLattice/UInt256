@@ -22,7 +22,7 @@ class UInt256BinaryOperationsTests: XCTestCase {
         XCTAssertEqual(a.byteSwapped, 0)
 
         // TODO: check the correctness of this test
-        XCTAssertEqual(a.words, [0, 0, 0, 0])
+        XCTAssertEqual(Array(a.words), [0, 0, 0, 0])
 
         let b = UInt256([
             0x8000000000000000,
@@ -38,7 +38,7 @@ class UInt256BinaryOperationsTests: XCTestCase {
         XCTAssertEqual(b.byteSwapped, UInt256([0, 0, 0, 0x80]))
 
         // TODO: check the correctness of this test
-        XCTAssertEqual(b.words, [0, 0, 0, 0x8000000000000000])
+        XCTAssertEqual(Array(b.words), [0, 0, 0, 0x8000000000000000])
 
         let c = UInt256([
             0x0000000100000000,
@@ -57,7 +57,7 @@ class UInt256BinaryOperationsTests: XCTestCase {
             0x1000000
         ]))
         // TODO: check the correctness of this test
-        XCTAssertEqual(c.words, [
+        XCTAssertEqual(Array(c.words), [
             0x100000000,
             0x100000000,
             0x100000000,
@@ -71,7 +71,7 @@ class UInt256BinaryOperationsTests: XCTestCase {
         XCTAssertEqual(d.leadingZeroBitCount, 191)
 
         // TODO: check the correctness of this test
-        XCTAssertEqual(d.words, [0, 1, 0, 0])
+        XCTAssertEqual(Array(d.words), [0, 1, 0, 0])
 
         let e = UInt256([
             0x0123456789abcdef,

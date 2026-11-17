@@ -3,20 +3,28 @@ import Foundation
 
 extension UInt256: BinaryInteger {
 
-    public typealias Words = [UInt]
+    /// The value's words, least significant first, read from the value in
+    /// place: no array is built per call.
+    public struct Words: RandomAccessCollection, Sendable {
+        let value: UInt256
+
+        public var startIndex: Int { return 0 }
+        public var endIndex: Int { return UInt256.bitWidth / UInt.bitWidth }
+
+        public subscript(position: Int) -> UInt {
+            precondition(position >= startIndex && position < endIndex, "Index out of range")
+            let wordsPerPart = UInt64.bitWidth / UInt.bitWidth
+            let part = value.parts[3 - position / wordsPerPart]
+            return UInt(truncatingIfNeeded: part >> UInt64((position % wordsPerPart) * UInt.bitWidth))
+        }
+    }
 
     public static var isSigned: Bool {
         return false
     }
 
-    public var words: [UInt] {
-        get {
-            var result = [UInt]()
-            for value in parts.reversed() {
-                result.append(contentsOf: value.words)
-            }
-            return result
-        }
+    public var words: Words {
+        return Words(value: self)
     }
 
     public static var bitWidth: Int {
