@@ -375,9 +375,10 @@ class UInt256ArithmeticTests: XCTestCase {
 
     func testBarrettDivision64() {
         for _ in 0..<100 {
-            let hi = arc4random64()
-            let lo = arc4random64()
             let a = arc4random64()
+            // Below the divisor, so the quotient fits a word.
+            let hi = arc4random64() % a
+            let lo = arc4random64()
             let invH = UInt64.max / a
             let rH = UInt64.max % a
             var (invL, rL) = a.dividingFullWidth((high: rH, low: UInt64.max))

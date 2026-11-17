@@ -38,6 +38,11 @@ public struct UInt256: Sendable {
     }
 
     public init(withUInt64Array values: [UInt64]) {
+        // Four words are already the representation: keep the array as is.
+        if values.count == 4 {
+            parts = values
+            return
+        }
         var _parts = Array(values)
         while _parts.count < 4 {
             _parts.insert(0, at: 0)
@@ -60,7 +65,22 @@ public struct UInt256: Sendable {
         }
     }
 
+    /// The 64 lowercase hex digits, most significant first, zero-padded:
+    /// what `String(format: "%0.16lx%0.16lx%0.16lx%0.16lx", ...)` gives for
+    /// the four words, written a nibble at a time.
     public func toHexString() -> String {
-        return String(format: "%0.16lx%0.16lx%0.16lx%0.16lx", parts[0], parts[1], parts[2], parts[3])
+        return withUnsafeTemporaryAllocation(of: UInt8.self, capacity: 64) { buffer in
+            var index = 0
+            for part in parts {
+                var shift: UInt64 = 60
+                for _ in 0..<16 {
+                    let nibble = UInt8(truncatingIfNeeded: (part >> shift) & 0xf)
+                    buffer[index] = nibble < 10 ? nibble + 48 : nibble + 87
+                    index += 1
+                    shift = shift &- 4
+                }
+            }
+            return String(decoding: buffer, as: UTF8.self)
+        }
     }
 }
