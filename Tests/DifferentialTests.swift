@@ -182,13 +182,30 @@ class DifferentialTests: XCTestCase {
             }
             cases.append((UInt256(u), UInt256(v)))
         }
-        // Knuth's example shape, scaled to 64-bit words.
-        cases.append((UInt256([0, 0x7fff_ffff_ffff_ffff, 0x8000_0000_0000_0000, 0]),
-                      UInt256([0, 0, 0x8000_0000_0000_0000, 0x0000_0000_0000_0001])))
-        cases.append((UInt256([0x8000_0000_0000_0000, 0, 0, 0x0000_0000_0000_0003]),
-                      UInt256([0, 0x2000_0000_0000_0000, 0, 0x0000_0000_0000_0001])))
+        // Reaches add-back, and add-back right after a B-1 estimate.
         cases.append((UInt256([0x7fff_ffff_ffff_ffff, 0x8000_0000_0000_0000, 0, 0]),
                       UInt256([0, 0x8000_0000_0000_0000, 0, 1])))
+        cases.append((UInt256([0xffff_ffff_ffff_fffe, 0x0000_0000_0000_0001, 0xffff_ffff_ffff_fffe, 0]),
+                      UInt256([0, 0xffff_ffff_ffff_ffff, 0, 0xffff_ffff_ffff_ffff])))
+        // Dividends one off a multiple of a 3- or 4-word divisor, where the
+        // estimate is most often one too large.
+        for _ in 0..<20_000 {
+            let n = Int.random(in: 3...4, using: &generator)
+            var v: [UInt64] = Array(repeating: 0, count: 4)
+            for i in (4 - n)..<4 {
+                v[i] = DifferentialTests.edgeWords.randomElement(using: &generator)!
+            }
+            if v[4 - n] == 0 { v[4 - n] = 1 }
+            let b = UInt256(v)
+            let q = UInt256.max >> (64 * (n - 1) + Int.random(in: 0..<64, using: &generator))
+            let product = q.multipliedFullWidth(by: b)
+            guard product.high == 0 else { continue }
+            for k in [UInt256(0), UInt256(1), b - 1] {
+                let (above, overflow) = product.low.addingReportingOverflow(k)
+                if !overflow { cases.append((above, b)) }
+            }
+            if product.low > 0 { cases.append((product.low - 1, b)) }
+        }
         for (a, b) in cases {
             let expected = DifferentialTests.referenceDivision(a, b)
             let actual = UInt256.divisionWithRemainder(a, b)
